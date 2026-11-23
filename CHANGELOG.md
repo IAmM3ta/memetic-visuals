@@ -9,5 +9,9 @@ All notable changes to this site. Dates are ET.
 - Full SEO set: title, description, canonical, OG/Twitter with 1200x630 `assets/og.jpg`, JSON-LD, sitemap.xml, robots.txt, favicons, alt text.
 - GitHub Actions Pages workflow with a no-CNAME guard and an SEO smoke check.
 
+### Verified (live, 2026-11-23 ET)
+- Lighthouse 12.8.2 (mobile, headless Chrome) on https://iamm3ta.github.io/memetic-visuals/: Performance 100 · Accessibility 100 · Best Practices 100 · Seo 100.
+- Pages settings: HTTPS enforced (`https_enforced: true`), no CNAME.
+
 ### Fixed
 - Pages workflow: grant `actions: read` so deploy-pages@v5 can find the uploaded artifact (first deploy failed without it).
