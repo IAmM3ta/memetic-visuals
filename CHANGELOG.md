@@ -10,7 +10,7 @@ All notable changes to this site. Dates are ET.
 - GitHub Actions Pages workflow with a no-CNAME guard and an SEO smoke check.
 
 ### Verified (live, 2026-11-23 ET)
-- Lighthouse 12.8.2 (mobile, headless Chrome) on https://iamm3ta.github.io/memetic-visuals/: Performance 100 · Accessibility 100 · Best Practices 100 · Seo 100.
+- Lighthouse 12.8.2 (mobile, headless Chrome) on https://iamm3ta.github.io/memetic-visuals/: Performance 100 · Accessibility 100 · Best Practices 100 · SEO 100.
 - Pages settings: HTTPS enforced (`https_enforced: true`), no CNAME.
 
 ### Fixed
