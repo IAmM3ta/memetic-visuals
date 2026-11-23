@@ -1,0 +1,68 @@
+# Publish this static site to GitHub Pages on every push to main.
+#
+# The site is the repository root (index.html, css/, assets/, sitemap.xml, robots.txt ...).
+# There is no build step: HTML is generated on the box by the Memetic Media builder
+# (memetic-media repo, builder/) and committed as plain files.
+#
+# Actions, in the order GitHub expects:
+#   actions/configure-pages -> actions/upload-pages-artifact -> actions/deploy-pages
+#
+# One-time setup: Settings -> Pages -> Source: GitHub Actions (done by the API on creation),
+# then "Enforce HTTPS" once the certificate is issued.
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a production deploy that is already running.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # Guard: no custom domain until one is bought and approved. Remove this step
+      # in the same commit that adds a CNAME file.
+      - name: No CNAME yet (launching on github.io)
+        run: test ! -e CNAME
+
+      # Guard: every page must keep its SEO basics.
+      - name: SEO smoke check
+        run: |
+          for f in index.html 404.html; do
+            grep -q '<title>' "$f"
+            grep -q 'name="description"' "$f"
+            grep -q 'rel="canonical"' "$f"
+            grep -q 'og:image' "$f"
+          done
+          test -s sitemap.xml && test -s robots.txt
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          # Repo root. Dotfiles such as .github are excluded by the action.
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

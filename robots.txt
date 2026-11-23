@@ -1,0 +1,6 @@
+# Memetic Visuals: everything is public. Note: on a github.io project URL, crawlers read
+# the robots.txt at the host root; this file takes effect once a custom domain is attached.
+User-agent: *
+Allow: /
+
+Sitemap: https://iamm3ta.github.io/memetic-visuals/sitemap.xml
