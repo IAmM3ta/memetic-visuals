@@ -8,3 +8,6 @@ All notable changes to this site. Dates are ET.
 - Shared Memetic Media template: header, network footer cross-linking all six sites, shared `css/site.css`.
 - Full SEO set: title, description, canonical, OG/Twitter with 1200x630 `assets/og.jpg`, JSON-LD, sitemap.xml, robots.txt, favicons, alt text.
 - GitHub Actions Pages workflow with a no-CNAME guard and an SEO smoke check.
+
+### Fixed
+- Pages workflow: grant `actions: read` so deploy-pages@v5 can find the uploaded artifact (first deploy failed without it).
