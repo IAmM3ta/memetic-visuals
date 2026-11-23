@@ -31,10 +31,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Two jobs, GitHub's reference layout. Root cause of the 2026-11-23 failures:
+  # with upload and deploy in ONE job, deploy-pages asked for the artifact about a
+  # second after upload finished and the artifact list was not indexed yet
+  # ("Found 0 artifact(s)" / 'No artifacts named "github-pages"'), although the
+  # artifact existed. The job boundary gives it time to register; the delayed
+  # retry below covers the rare case where it still is not visible.
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,12 +62,33 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v6
 
+      # upload-pages-artifact@v5 + deploy-pages@v5 are a matched pair (both on
+      # artifact API v4). Do not mix with upload-artifact@v3-era actions.
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v5
         with:
           # Repo root. Dotfiles such as .github are excluded by the action.
           path: .
 
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url || steps.retry.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # First attempt may not fail the run; the retry decides the outcome.
       - name: Deploy to GitHub Pages
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v5
+
+      # One retry after a pause, in case the artifact is still being indexed.
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+
+      - name: Deploy to GitHub Pages (retry)
+        id: retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5

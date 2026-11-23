@@ -2,6 +2,11 @@
 
 All notable changes to this site. Dates are ET.
 
+## 2026-11-23 — v1.0.1 CI fix
+
+### Fixed
+- Pages deploys failed intermittently with 'No artifacts named "github-pages" were found' even though the artifact was uploaded: deploy-pages queried it about one second after upload, in the same job, before it was indexed. The workflow now uses separate build and deploy jobs (GitHub's reference layout) plus one retry after 30 seconds. Action versions unchanged (upload-pages-artifact@v5 + deploy-pages@v5 are a matched pair); concurrency was not cancelling runs (`cancel-in-progress: false`).
+
 ## 2026-11-23 — v1.0.0 launch
 
 - First public version at https://iamm3ta.github.io/memetic-visuals/ (github.io; no custom domain yet).
