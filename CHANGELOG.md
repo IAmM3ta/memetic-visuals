@@ -2,6 +2,27 @@
 
 All notable changes to this site. Dates are ET.
 
+## 2026-11-25 — v1.1.0 Visionary Stills Vol. 1 (draft, unmerged)
+
+### Changed
+- Replaced the Loops Vol. 1 "Buy link coming soon" placeholder with a buy button
+  for Visionary Stills Vol. 1, pointing at the placeholder Gumroad slug
+  `https://ledgerwright.gumroad.com/l/memetic-visuals-pack`. Update the href
+  (and the JSON-LD `offers.url`) if that slug changes when the product is created.
+- Replaced the loop gallery and preview reel with web-size previews of the
+  eighteen Drive stills. Hero, cover and Open Graph card now use a crop of
+  Flow State. Product copy, license, 404 nav, sitemap lastmod and README
+  match the stills pack.
+- JSON-LD Product is now Visionary Stills Vol. 1 at $14, with `availability`
+  set to PreOrder until the Gumroad listing is live.
+
+### Notes
+- Pages still deploys only from `main`. This change is intended to land
+  through a pull request and should not be merged until the Gumroad product
+  exists, or the public button will 404.
+- Full-resolution masters are not in this repo.
+
+
 ## 2026-11-23 — v1.0.1 CI fix
 
 ### Fixed
